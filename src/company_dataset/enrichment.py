@@ -2,13 +2,122 @@ from __future__ import annotations
 
 import json
 import re
+from collections import Counter
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from html import unescape
 from pathlib import Path
 from urllib.parse import urlsplit
 
 from company_dataset.build import load_candidates
 from company_dataset.http import HttpClient, RequestError
 from company_dataset.models import utc_now
+
+_TAG_RE = re.compile(r"<[^>]+>")
+_WS_RE = re.compile(r"\s+")
+
+COUNTRY_NAMES = {
+    "usa": "US", "united states": "US", "united states of america": "US", "us": "US",
+    "u.s.a.": "US", "u.s": "US", "america": "US", "estados unidos": "US",
+    "united kingdom": "GB", "uk": "GB", "u.k.": "GB", "great britain": "GB",
+    "britain": "GB", "england": "GB", "scotland": "GB", "wales": "GB",
+    "northern ireland": "GB",
+    "canada": "CA",
+    "australia": "AU", "new zealand": "NZ", "ireland": "IE", "germany": "DE",
+    "deutschland": "DE", "france": "FR", "spain": "ES", "italy": "IT",
+    "netherlands": "NL", "the netherlands": "NL", "belgium": "BE", "austria": "AT",
+    "switzerland": "CH", "sweden": "SE", "norway": "NO", "denmark": "DK",
+    "finland": "FI", "iceland": "IS", "poland": "PL", "portugal": "PT",
+    "greece": "GR", "czech republic": "CZ", "czechia": "CZ", "hungary": "HU",
+    "romania": "RO", "bulgaria": "BG", "croatia": "HR", "serbia": "RS",
+    "slovakia": "SK", "slovenia": "SI", "ukraine": "UA", "lithuania": "LT",
+    "latvia": "LV", "estonia": "EE", "turkey": "TR", "türkiye": "TR",
+    "israel": "IL", "united arab emirates": "AE", "saudi arabia": "SA",
+    "qatar": "QA", "india": "IN", "singapore": "SG", "japan": "JP",
+    "south korea": "KR", "china": "CN", "hong kong": "HK", "taiwan": "TW",
+    "philippines": "PH", "malaysia": "MY", "indonesia": "ID", "vietnam": "VN",
+    "thailand": "TH", "brazil": "BR", "mexico": "MX", "argentina": "AR",
+    "chile": "CL", "colombia": "CO", "peru": "PE", "uruguay": "UY",
+    "costa rica": "CR", "panama": "PA", "guatemala": "GT", "jamaica": "JM",
+    "trinidad and tobago": "TT", "south africa": "ZA", "kenya": "KE",
+    "nigeria": "NG", "egypt": "EG", "morocco": "MA",
+}
+
+
+def strip_html(text) -> str:
+    if not text:
+        return ""
+    s = _TAG_RE.sub(" ", str(text))
+    s = unescape(s)
+    return _WS_RE.sub(" ", s).strip()
+
+
+def normalize_country_name(name) -> str | None:
+    if not isinstance(name, str):
+        return None
+    key = name.strip().lower().rstrip(".")
+    if not key:
+        return None
+    return COUNTRY_NAMES.get(key)
+
+
+def greenhouse_facts(payload: dict) -> dict:
+    jobs = payload.get("jobs") or []
+    meta = payload.get("meta") or {}
+    jobs_count = meta.get("total", len(jobs))
+    company_name = None
+    for job in jobs:
+        if isinstance(job, dict) and job.get("company_name"):
+            company_name = str(job["company_name"]).strip()
+            break
+    origins: Counter[str] = Counter()
+    for job in jobs:
+        if not isinstance(job, dict):
+            continue
+        url = job.get("absolute_url") or ""
+        try:
+            host = urlsplit(url).hostname or ""
+        except ValueError:
+            continue
+        if host and not host.endswith(".greenhouse.io"):
+            scheme = urlsplit(url).scheme or "https"
+            origins[f"{scheme}://{host}"] += 1
+    website_url = origins.most_common(1)[0][0] if origins else None
+    return {
+        "jobs_count": jobs_count,
+        "company_name": company_name,
+        "website_url": website_url,
+    }
+
+
+def lever_facts(payload) -> dict:
+    postings = payload if isinstance(payload, list) else []
+    countries = {
+        str(p.get("country")).strip()
+        for p in postings
+        if isinstance(p, dict) and p.get("country")
+    }
+    country = countries.pop() if len(countries) == 1 else None
+    return {"jobs_count": len(postings), "country": country}
+
+
+def ashby_facts(payload: dict) -> dict:
+    jobs = payload.get("jobs") or []
+    jobs_count = len(jobs)
+    raw_countries = []
+    for job in jobs:
+        if not isinstance(job, dict):
+            continue
+        address = (job.get("address") or {}).get("postalAddress") or {}
+        name = address.get("addressCountry")
+        if isinstance(name, str) and name.strip():
+            raw_countries.append(name.strip())
+    country = None
+    if raw_countries:
+        mapped = {normalize_country_name(c) for c in raw_countries}
+        if len(mapped) == 1 and None not in mapped:
+            country = mapped.pop()
+    return {"jobs_count": jobs_count, "country": country}
+
 
 _EXCLUDE_DOMAINS = (
     "lever.co", "leverpatch.com", "greenhouse.io", "ashbyhq.com",

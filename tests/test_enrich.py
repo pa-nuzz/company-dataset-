@@ -1,4 +1,4 @@
-from company_dataset.enrich import (
+from company_dataset.enrichment import (
     ashby_facts,
     greenhouse_facts,
     lever_facts,
