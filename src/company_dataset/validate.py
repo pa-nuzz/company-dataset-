@@ -6,7 +6,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 from company_dataset.build import load_candidates
-from company_dataset.enrich import ashby_facts, greenhouse_facts, lever_facts, strip_html
+from company_dataset.enrichment import ashby_facts, greenhouse_facts, lever_facts, strip_html
 from company_dataset.http import HttpClient, RequestError
 from company_dataset.models import BoardValidation, Candidate, utc_now
 from company_dataset.normalize import (

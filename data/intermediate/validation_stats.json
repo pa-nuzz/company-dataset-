@@ -1,0 +1,23 @@
+{
+  "generated_at": "2026-10-17T15:12:57Z",
+  "candidates_total": 29723,
+  "checked": 29723,
+  "by_status": {
+    "invalid": 14707,
+    "valid": 15016
+  },
+  "by_ats": {
+    "ashby": {
+      "invalid": 1667,
+      "valid": 4109
+    },
+    "greenhouse": {
+      "invalid": 7186,
+      "valid": 8031
+    },
+    "lever": {
+      "valid": 2876,
+      "invalid": 5854
+    }
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "generated_at": "2026-10-17T15:12:35Z",
+  "per_source": {
+    "latmay": {
+      "file_present": true,
+      "records": 28162,
+      "rejects": 41476,
+      "rows_read": 69638,
+      "reject_reasons": {
+        "unsupported_ats": 41045,
+        "unparseable_url": 431
+      }
+    },
+    "lastroundai": {
+      "file_present": true,
+      "records": 9935,
+      "rejects": 0,
+      "rows_read": 9935,
+      "reject_reasons": {}
+    },
+    "kaleb": {
+      "file_present": true,
+      "records": 6225,
+      "rejects": 6012,
+      "rows_read": 12237,
+      "reject_reasons": {
+        "unsupported_ats": 6012
+      }
+    },
+    "moonie": {
+      "file_present": true,
+      "records": 1106,
+      "rejects": 698,
+      "rows_read": 1804,
+      "reject_reasons": {
+        "source_marked_dead": 94,
+        "unsupported_ats": 604
+      }
+    },
+    "feashliaa": {
+      "file_present": true,
+      "records": 15862,
+      "rejects": 0,
+      "rows_read": 15862,
+      "reject_reasons": {}
+    },
+    "commoncrawl": {
+      "file_present": true,
+      "records": 4767,
+      "rejects": 0,
+      "rows_read": 4767,
+      "reject_reasons": {}
+    },
+    "reapxdev_greenhouse": {
+      "file_present": true,
+      "records": 92,
+      "rejects": 0,
+      "rows_read": 92,
+      "reject_reasons": {}
+    },
+    "reapxdev_ashby": {
+      "file_present": true,
+      "records": 59,
+      "rejects": 0,
+      "rows_read": 59,
+      "reject_reasons": {}
+    }
+  },
+  "total_source_rows": 114394,
+  "in_scope_records": 66208,
+  "rejected_source_rows": 48186,
+  "unique_candidates": 29723,
+  "duplicate_rows": 36485
+}

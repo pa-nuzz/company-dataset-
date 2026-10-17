@@ -1,6 +1,6 @@
 # Quality Report: Companies on Greenhouse, Lever and Ashby
 
-Generated: 2026-10-17T13:00:17Z
+Generated: 2026-10-17T15:02:19Z
 
 ## Executive summary
 
