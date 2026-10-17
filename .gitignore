@@ -4,5 +4,16 @@ __pycache__/
 .pytest_cache/
 *.egg-info/
 .DS_Store
+
+# Cache - regenerated on each run
+data/cache/
+
+# Raw source downloads - large, can be re-downloaded
+data/raw/
+
+# Logs
 validate.log
-.claude/
+
+# Keep output data and reports (deliverables)
+# data/output/  -- uncomment to track output
+# reports/      -- uncomment to track reports
