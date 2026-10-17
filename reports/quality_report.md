@@ -1,15 +1,15 @@
 # Quality Report: Companies on Greenhouse, Lever and Ashby
 
-Generated: 2026-10-17T15:02:19Z
+Generated: 2026-10-17T16:02:18Z
 
 ## Executive summary
 
 | Metric | Value |
 |---|---|
-| Source rows read | 114243 |
-| In-scope source records (greenhouse/lever/ashby) | 66057 |
+| Source rows read | 114394 |
+| In-scope source records (greenhouse/lever/ashby) | 66208 |
 | Source rows rejected at parse | 48186 |
-| Duplicate source rows merged | 36334 |
+| Duplicate source rows merged | 36485 |
 | Unique candidate boards (ats + casefolded code) | 29723 |
 | Boards checked live | 29723 |
 | Validated live boards | 15016 |
@@ -28,6 +28,8 @@ Generated: 2026-10-17T15:02:19Z
 | moonie | CC0-1.0 | 1804 | 1106 | 698 | 1106 |
 | feashliaa | MIT | 15862 | 15862 | 0 | 15862 |
 | commoncrawl | CC ToU (factual URL data) | 4767 | 4767 | 0 | 4628 |
+| reapxdev_greenhouse | CC-BY-4.0 | 92 | 92 | 0 | 92 |
+| reapxdev_ashby | CC-BY-4.0 | 59 | 59 | 0 | 59 |
 
 - **License flag (kaleb):** No formal license file in repository; publisher site states 'free to pull as data... no attribution required'. Incorporated with attribution; FLAGGED for review.
 - **License flag (feashliaa):** MIT covers the repository including its data files. Board slugs are factual identifiers; each is live-verified against the vendor API before export.
@@ -45,7 +47,7 @@ Generated: 2026-10-17T15:02:19Z
 
 | Field | Non-null | Total | Coverage |
 |---|---|---|---|
-| name | 13491 | 15016 | 89.84% |
+| name | 13494 | 15016 | 89.86% |
 | description | 5933 | 15016 | 39.51% |
 | linkedin_url | 2007 | 15016 | 13.37% |
 | website_url | 2912 | 15016 | 19.39% |
@@ -55,7 +57,7 @@ Generated: 2026-10-17T15:02:19Z
 
 Records with ALL 7 required fields populated simultaneously: 1631 / 15016 (10.86%). This is not the average of the per-field percentages above — a row only counts here if every required field is non-empty at once. `country` is additional metadata, not one of the 7 required fields, and is reported separately below.
 
-Rows where name equals the board slug: 5720.
+Rows where name equals the board slug: 5723.
 
 ## Country coverage
 
@@ -69,7 +71,7 @@ Country is set only when every job posting on the board reports the same country
 
 ## Duplicates
 
-- Source rows merged into an existing board: 36334
+- Source rows merged into an existing board: 36485
 - Exported rows flagged as sharing a website URL with another exported row (cross-board duplicate signal): 91
 
 ## Policy and limitations
